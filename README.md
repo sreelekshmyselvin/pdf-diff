@@ -16,6 +16,7 @@ Inspired from the work of https://github.com/JoshData/pdf-diff (provides a termi
 > To run the snippet as an API
 - run the file **apiFile.py**
 - The body of the API should be a form-data with *file1* and *file2* as the keys.
+ ![API Input Sample](https://github.com/sreelekshmyselvin/pdf-difference-finder/blob/master/sampleAPI_Input.png)
 
   
 > The outputs generated will have an **image file** which highlights the differences as well as a **.json file** which contains the details of the changes in the files.
