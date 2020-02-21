@@ -22,3 +22,4 @@ if __name__ == '__main__':
 	filename1 = '1.pdf'
 	filename2 = '2.pdf'
 	processPDF(filename1,filename2)
+
