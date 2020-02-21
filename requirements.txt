@@ -1,0 +1,5 @@
+diff-match-patch-python==1.0.2
+lxml==4.5.0
+pdf-diff==0.9.1
+Pillow==7.0.0
+PyPDF2==1.26.0
