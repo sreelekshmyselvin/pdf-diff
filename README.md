@@ -16,4 +16,4 @@ Inspired from the work of https://github.com/JoshData/pdf-diff (provides a termi
  - import **pdfdifferencefinder.py**
  - pdfdifferencefinder.processPDF(filename1,filename2)
   
-- The outputs generated will have an **image file** which highlights the differences as well as a **.json file** which contains the details of the changes in the files.
+> The outputs generated will have an **image file** which highlights the differences as well as a **.json file** which contains the details of the changes in the files.
