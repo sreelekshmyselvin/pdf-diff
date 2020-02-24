@@ -19,7 +19,7 @@ width = 900
 minute_change_marker = "orange"
 new_additions_marker = "green"
 missing_data_marker = "red"
-default_marker = "blure"
+default_marker = "blue"
 
 STYLES = strike_with_underline
 WIDTH = width
