@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Created on 07/02/20 12:17 PM
 @author : Sreelekshmy Selvin
@@ -15,6 +15,9 @@ from lxml import etree
 from PIL import Image, ImageDraw, ImageOps
 import json
 import config
+import re
+
+
 def compute_changes(pdf_fn_1, pdf_fn_2, top_margin=0, bottom_margin=100):
 	# Serialize the text in the two PDFs.
 	docs = [serialize_pdf(0, pdf_fn_1, top_margin, bottom_margin),
@@ -186,7 +189,7 @@ def process_hunks(hunks, boxes):
 	return changes
 
 
-def mark_difference(hunk_length, offset, boxes, changes, c_type = 0):
+def mark_difference(hunk_length, offset, boxes, changes, c_type=0):
 	# We're passed an offset and length into a document given to us
 	# by the text comparison, and we'll mark the text boxes passed
 	# in boxes as having changed content.
@@ -340,66 +343,68 @@ def draw_red_boxes(changes, pages, styles):
 
 	for change in changes:
 		if change == "*": continue  # not handled yet
-
+		x = change['text']
+		if re.match('\w', x):
+			print(x,"YES")
 		# 'box', 'strike', 'underline'
-		style = styles[change["pdf"]["index"]]
+			style = styles[change["pdf"]["index"]]
 
-		# the Image of the page
-		im = pages[change["pdf"]["index"]][change["page"]]
+			# the Image of the page
+			im = pages[change["pdf"]["index"]][change["page"]]
 
-		# draw it
-		draw = ImageDraw.Draw(im)
+			# draw it
+			draw = ImageDraw.Draw(im)
 
-		if style == "box":
-			if change['c_type']:
-				draw.rectangle((
-					change["x"], change["y"],
-					(change["x"] + change["width"]), (change["y"] + change["height"]),
-				), outline=config.minute_change_marker)
+			if style == "box":
+				if change['c_type']:
+					draw.rectangle((
+						change["x"], change["y"],
+						(change["x"] + change["width"]), (change["y"] + change["height"]),
+					), outline=config.minute_change_marker)
 				# pass
-			elif change['pdf']['index']:
-				draw.rectangle((
-					change["x"], change["y"],
-					(change["x"] + change["width"]), (change["y"] + change["height"]),
-				), outline=config.new_additions_marker)
-			else:
-				draw.rectangle((
-					change["x"], change["y"],
-					(change["x"] + change["width"]), (change["y"] + change["height"]),
-				), outline=config.missing_data_marker)
-		elif style == "strike":
-			if change['c_type']:
-				draw.line((
-					change["x"], change["y"] + change["height"] / 2,
-					change["x"] + change["width"], change["y"] + change["height"] / 2
-				), fill=config.minute_change_marker)
-			elif change['pdf']['index']:
-				draw.line((
-					change["x"], change["y"] + change["height"] / 2,
-					change["x"] + change["width"], change["y"] + change["height"] / 2
-				), fill=config.new_additions_marker)
-			else:
-				draw.line((
-					change["x"], change["y"] + change["height"] / 2,
-					change["x"] + change["width"], change["y"] + change["height"] / 2
-				), fill=config.missing_data_marker)
-		elif style == "underline":
-			if change['c_type']:
-				draw.line((
-					change["x"], change["y"] + change["height"],
-					change["x"] + change["width"], change["y"] + change["height"]
-				), fill=config.minute_change_marker)
-			elif change['pdf']['index']:
-				draw.line((
-					change["x"], change["y"] + change["height"],
-					change["x"] + change["width"], change["y"] + change["height"]
-				), fill=config.new_additions_marker)
-			else:
-				draw.line((
-					change["x"], change["y"] + change["height"],
-					change["x"] + change["width"], change["y"] + change["height"]
-				), fill=config.missing_data_marker)
-		del draw
+				elif change['pdf']['index']:
+					draw.rectangle((
+						change["x"], change["y"],
+						(change["x"] + change["width"]), (change["y"] + change["height"]),
+					), outline=config.new_additions_marker)
+				else:
+					draw.rectangle((
+						change["x"], change["y"],
+						(change["x"] + change["width"]), (change["y"] + change["height"]),
+					), outline=config.missing_data_marker)
+			elif style == "strike":
+				if change['c_type']:
+					draw.line((
+						change["x"], change["y"] + change["height"] / 2,
+						change["x"] + change["width"], change["y"] + change["height"] / 2
+					), fill=config.minute_change_marker)
+				elif change['pdf']['index']:
+					draw.line((
+						change["x"], change["y"] + change["height"] / 2,
+						change["x"] + change["width"], change["y"] + change["height"] / 2
+					), fill=config.new_additions_marker)
+				else:
+					draw.line((
+						change["x"], change["y"] + change["height"] / 2,
+						change["x"] + change["width"], change["y"] + change["height"] / 2
+					), fill=config.missing_data_marker)
+			elif style == "underline":
+				if change['c_type']:
+					draw.line((
+						change["x"], change["y"] + change["height"],
+						change["x"] + change["width"], change["y"] + change["height"]
+					), fill=config.minute_change_marker)
+				elif change['pdf']['index']:
+					draw.line((
+						change["x"], change["y"] + change["height"],
+						change["x"] + change["width"], change["y"] + change["height"]
+					), fill=config.new_additions_marker)
+				else:
+					draw.line((
+						change["x"], change["y"] + change["height"],
+						change["x"] + change["width"], change["y"] + change["height"]
+					), fill=config.missing_data_marker)
+			del draw
 
 
 def zealous_crop(page_groups):

@@ -21,5 +21,5 @@ new_additions_marker = "green"
 missing_data_marker = "red"
 default_marker = "blue"
 
-STYLES = strike_with_underline
+STYLES = box
 WIDTH = width
