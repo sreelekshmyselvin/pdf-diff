@@ -345,7 +345,6 @@ def draw_red_boxes(changes, pages, styles):
 		if change == "*": continue  # not handled yet
 		x = change['text']
 		if re.match('\w', x):
-			print(x,"YES")
 		# 'box', 'strike', 'underline'
 			style = styles[change["pdf"]["index"]]
 
